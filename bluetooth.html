@@ -25,18 +25,16 @@
   <ol>
     <li>Click the address bar at the top of this window, press <b class="paste">Ctrl+V</b>, then Enter.<br>
         If nothing appears, click Copy and try again:
-        <code id="flag">edge://flags/#enable-web-bluetooth-new-permissions-backend</code>
+        <code id="flag">chrome://flags/#enable-web-bluetooth-new-permissions-backend</code>
         <button id="copy">Copy</button><span class="done" id="done"></span></li>
     <li>Set <b>Use the new permissions backend for Web Bluetooth</b> to <b>Enabled</b>.</li>
-    <li>Click <b>Restart</b> at the bottom. <span class="browser">Edge</span> restarts and Apple Preserves comes back.
+    <li>Click <b>Restart</b> at the bottom. Chrome restarts and Apple Preserves comes back.
         Pick your board once more; after that it's remembered.</li>
   </ol>
 </main>
 <script>
-  const edge = navigator.userAgent.includes("Edg/");
-  const flag = `${edge ? "edge" : "chrome"}://flags/#enable-web-bluetooth-new-permissions-backend`;
-  document.getElementById("flag").textContent = flag;
-  for (const e of document.querySelectorAll(".browser")) e.textContent = edge ? "Edge" : "Chrome";
+  // CHROME ONLY (Tom, 2026-11-10): Edge 157 has no such flag and cannot remember the board.
+  const flag = "chrome://flags/#enable-web-bluetooth-new-permissions-backend";
   if (/Mac/.test(navigator.userAgent)) for (const e of document.querySelectorAll(".paste")) e.textContent = "Cmd+V";
   document.getElementById("copy").onclick = async () => {
     try { await navigator.clipboard.writeText(flag); document.getElementById("done").textContent = "Copied"; }
