@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bluetooth Permissions</title>
+<!-- OUTSIDE THE APP'S /app/ SCOPE ON PURPOSE (Tom, 2026-11-10): the installed app opens this in a NORMAL browser
+     window, which has the address bar the flag's address must be pasted into. -->
+<style>
+  :root { --accent: #5F9EA0; }
+  body { margin: 0; background: #fff; color: #000; font: 16px/1.5 "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: var(--accent); font-size: 26px; margin: 0 0 6px; }
+  ol { padding-left: 22px; }
+  li { margin: 14px 0; }
+  code { display: block; margin: 8px 0; padding: 8px; background: #F5F5F5; word-break: break-all; font-size: 14px; }
+  button { border: 0; background: var(--accent); color: #fff; padding: 6px 16px; font-size: 14px; border-radius: 4px; cursor: pointer; }
+  .done { color: var(--accent); margin-left: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Bluetooth Permissions</h1>
+  <p>This lets Apple Preserves remember your board.</p>
+  <ol>
+    <li>Click the address bar at the top of this window, press <b class="paste">Ctrl+V</b>, then Enter.<br>
+        If nothing appears, click Copy and try again:
+        <code id="flag">edge://flags/#enable-web-bluetooth-new-permissions-backend</code>
+        <button id="copy">Copy</button><span class="done" id="done"></span></li>
+    <li>Set <b>Use the new permissions backend for Web Bluetooth</b> to <b>Enabled</b>.</li>
+    <li>Click <b>Restart</b> at the bottom. <span class="browser">Edge</span> restarts and Apple Preserves comes back.
+        Pick your board once more; after that it's remembered.</li>
+  </ol>
+</main>
+<script>
+  const edge = navigator.userAgent.includes("Edg/");
+  const flag = `${edge ? "edge" : "chrome"}://flags/#enable-web-bluetooth-new-permissions-backend`;
+  document.getElementById("flag").textContent = flag;
+  for (const e of document.querySelectorAll(".browser")) e.textContent = edge ? "Edge" : "Chrome";
+  if (/Mac/.test(navigator.userAgent)) for (const e of document.querySelectorAll(".paste")) e.textContent = "Cmd+V";
+  document.getElementById("copy").onclick = async () => {
+    try { await navigator.clipboard.writeText(flag); document.getElementById("done").textContent = "Copied"; }
+    catch { document.getElementById("done").textContent = "Copy failed: select the line above and copy it"; }
+  };
+</script>
+</body>
+</html>
