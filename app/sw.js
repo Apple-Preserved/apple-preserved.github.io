@@ -12,7 +12,9 @@ self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   e.respondWith(caches.open(CACHE).then(async c => {
     const hit   = await c.match(e.request, { ignoreSearch: true });
-    const fresh = fetch(e.request).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; });
+    // ALWAYS ASK THE SITE (Tom 11-11): Pages sends max-age=600, so a plain fetch could hand back the browser's
+    // 10-minute copy and the update would miss the next launch too.  F5 was the only way round it.
+    const fresh = fetch(e.request, { cache: "no-cache" }).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; });
     if (hit) { e.waitUntil(fresh.catch(() => {})); return hit; }
     return fresh;
   }));
